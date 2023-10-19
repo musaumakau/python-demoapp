@@ -14,7 +14,7 @@ pipeline {
      stage('Logging into AWS ECR') {
       steps {
          script {
-             sh "aws ecr get-login-password - region ${AWS_DEFAULT_REGION} | docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 453702019477.dkr.ecr.eu-west-1.amazonaws.com/python-app
+             sh  docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 453702019477.dkr.ecr.eu-west-1.amazonaws.com/python-app
        }
  
     }
