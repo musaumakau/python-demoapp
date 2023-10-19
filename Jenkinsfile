@@ -1,4 +1,4 @@
- 
+#Jenkinspipeline to build and push image to Amazon ECR# 
 pipeline {
     agent any
     environment {
