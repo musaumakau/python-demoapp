@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment {
         AWS_ACCOUNT_ID= "453702019477"
+        AWS_ACCESS_KEY_ID =  "AKIAWTIV7NGK2ODJOSGL"
+        AWS_SECRET_ACCESS_KEY = "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"
         AWS_DEFAULT_REGION= "eu-west-1" 
         IMAGE_REPO_NAME="python-app"
         IMAGE_TAG="latest"
@@ -11,8 +13,11 @@ pipeline {
         stage('Logging into AWS ECR') {
             steps {
                 script {
-                    sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"""
-                }
+                    script {
+    
+                        def ecr_login = sh(script: "aws ecr get-login-password --region ${AWS_DEFAULT_REGION}", returnStdout: true).trim()
+                        sh "docker login --username AWS --password ${ecr_login} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+              }
             }
         }
         
