@@ -14,7 +14,7 @@ pipeline {
         stage('Logging into AWS ECR') {
             steps {
                 script {
-                    withAWS(credentials: 'baa33868-a016-4d11-9a13-f67b13f884f8') {
+                    withAWS(credentials: '3dbe8ac9-9769-44cf-9563-f23e4ff629d2') {
                         def ecr_login = sh(script: "aws ecr get-login-password --region ${AWS_DEFAULT_REGION}", returnStdout: true).trim()
                         sh "docker login --username AWS --password ${ecr_login} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
                     }
@@ -39,7 +39,7 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    withAWS(credentials: 'baa33868-a016-4d11-9a13-f67b13f884f8') {
+                    withAWS(credentials: '3dbe8ac9-9769-44cf-9563-f23e4ff629d2') {
                         sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"""
                         sh """docker push ${REPOSITORY_URI}:${IMAGE_TAG}"""
                     }
