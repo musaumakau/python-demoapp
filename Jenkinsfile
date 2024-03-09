@@ -39,7 +39,7 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    withAWS(credentials: 'YOUR_AWS_CREDENTIALS_ID') {
+                    withAWS(credentials: 'baa33868-a016-4d11-9a13-f67b13f884f8') {
                         sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"""
                         sh """docker push ${REPOSITORY_URI}:${IMAGE_TAG}"""
                     }
