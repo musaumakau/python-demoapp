@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "453702019477"
+        AWS_ACCOUNT_ID = "533267348230"
         AWS_DEFAULT_REGION = "eu-west-1"
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
