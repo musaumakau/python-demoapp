@@ -3,25 +3,13 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "533267348230"
-        AWS_DEFAULT_REGION = "eu-west-1"
+        DOCKERHUB_CREDENTIALS = credentials('a6a8b4dd-bfd3-4607-b59d-6eaaf9350c4b')
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        DOCKERHUB_REPO = "your-dockerhub-username/${IMAGE_REPO_NAME}"
     }
 
     stages {
-        stage('Logging into AWS ECR') {
-            steps {
-                script {
-                    withAWS(credentials: '48254ecc-ef3b-4169-845e-47b78d840d0f') {
-                        def ecr_login = sh(script: "aws ecr get-login-password --region ${AWS_DEFAULT_REGION}", returnStdout: true).trim()
-                        sh "docker login --username AWS --password ${ecr_login} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                    }
-                }
-            }
-        }
-
         stage('Cloning Git') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/musaumakau/python-demoapp.git/']]])
@@ -36,12 +24,29 @@ pipeline {
             }
         }
 
-        stage('Pushing to ECR') {
+        stage('Tagging image') {
             steps {
                 script {
-                    withAWS(credentials: '48254ecc-ef3b-4169-845e-47b78d840d0f') {
-                        sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"""
-                        sh """docker push ${REPOSITORY_URI}:${IMAGE_TAG}"""
+                    sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${DOCKERHUB_REPO}:${IMAGE_TAG}"
+                }
+            }
+        }
+
+        stage('Logging into Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                        sh 'echo "Logged in to Docker Hub"'
+                    }
+                }
+            }
+        }
+
+        stage('Pushing to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                        sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
                     }
                 }
             }
