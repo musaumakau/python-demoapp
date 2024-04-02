@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('1d81f96b-523f-444c-82f1-33f52167460d')
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
-        DOCKERHUB_REPO = "your-dockerhub-username/${IMAGE_REPO_NAME}"
+        DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
     }
 
     stages {
