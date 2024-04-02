@@ -3,16 +3,26 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('5935-dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('5936-dockerhub')  // Replace with your Docker Hub credentials ID
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
-        DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
+        DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"  // Replace with your Docker Hub username
     }
 
     stages {
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/musaumakau/python-demoapp.git/']]])
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: '',
+                        url: 'https://github.com/musaumakau/python-demoapp.git/'
+                    ]]
+                ])
             }
         }
 
