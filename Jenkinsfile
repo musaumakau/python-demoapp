@@ -51,6 +51,15 @@ pipeline {
             }
         }
 
+      stage('Debug') {
+            steps {
+                script {
+                    sh "echo DOCKERHUB_REPO: ${DOCKERHUB_REPO}" 
+                    sh "echo IMAGE_TAG: ${IMAGE_TAG}"
+                }
+            }
+        }
+
         stage('Pushing to Docker Hub') {
             steps {
                 script {
