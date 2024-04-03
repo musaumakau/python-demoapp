@@ -1,9 +1,10 @@
+
 pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_USER = credentials('dockerhub-username')
-        DOCKER_HUB_PASSWORD = credentials('dockerhub-password')
+        DOCKER_HUB_USER = env.DOCKERHUB_USERNAME
+        DOCKER_HUB_PASSWORD = env.DOCKERHUB_PASSWORD
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
         DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
