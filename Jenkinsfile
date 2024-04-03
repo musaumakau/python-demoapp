@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('5935-dockerhub')  // Replace with your Docker Hub credentials ID
+        DOCKERHUB_CREDENTIALS = credentials('5936/ddockerhub')  // Replace with your Docker Hub credentials ID
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
         DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"  // Replace with your Docker Hub username
