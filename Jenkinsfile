@@ -1,11 +1,13 @@
+
 pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('24ba2201-0af5-43cf-9150-50a5a2576379')  
+        DOCKER_HUB_USER = env.DOCKERHUB_USERNAME
+        DOCKER_HUB_PASSWORD = env.DOCKERHUB_PASSWORD
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
-        DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}" 
+        DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
     }
 
     stages {
@@ -43,18 +45,14 @@ pipeline {
 
         stage('Logging into Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
-                        sh 'echo "Logged in to Docker Hub"'
-                    }
-                }
+                sh 'echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin'
             }
         }
 
-      stage('Debug') {
+        stage('Debug') {
             steps {
                 script {
-                    sh "echo DOCKERHUB_REPO: ${DOCKERHUB_REPO}" 
+                    sh "echo DOCKERHUB_REPO: ${DOCKERHUB_REPO}"
                     sh "echo IMAGE_TAG: ${IMAGE_TAG}"
                 }
             }
@@ -62,11 +60,7 @@ pipeline {
 
         stage('Pushing to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
-                        sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
-                    }
-                }
+                sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
             }
         }
 
