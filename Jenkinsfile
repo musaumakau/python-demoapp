@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -63,6 +62,14 @@ pipeline {
                 script {
                     // Update ECS service with new Docker image
                     sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
+                }
+            }
+        }
+
+        stage('Remove Docker Image') {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"
                 }
             }
         }
