@@ -69,6 +69,20 @@ pipeline {
         stage('Remove Docker Image') {
             steps {
                 script {
+<<<<<<< HEAD
+=======
+                    // Update ECS service with new Docker image
+                    withAWS(credentials: 'c55bbabf-5eef-4d2a-aba9-43050909822c', region: 'eu-west-1') {
+                        sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
+                    }
+                }
+            }
+        }
+
+        stage('Remove Docker Image') {
+            steps {
+                script {
+>>>>>>> d535a4aa1ab965e27367f6ed8d74f5b0337685c9
                     sh "docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"
                 }
             }
