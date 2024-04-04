@@ -8,8 +8,11 @@ pipeline {
         IMAGE_REPO_NAME = "python-app"
         IMAGE_TAG = "latest"
         DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
+        ECS_CLUSTER_NAME = "example-cluster"
+        ECS_SERVICE_NAME = "python-app"
     }
 
+    
     stages {
         stage('Cloning Git') {
             steps {
@@ -49,25 +52,17 @@ pipeline {
             }
         }
 
-        stage('Debug') {
-            steps {
-                script {
-                    sh "echo DOCKERHUB_REPO: ${DOCKERHUB_REPO}"
-                    sh "echo IMAGE_TAG: ${IMAGE_TAG}"
-                }
-            }
-        }
-
         stage('Pushing to Docker Hub') {
             steps {
                 sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
             }
         }
 
-        stage('Remove Docker Image') {
+        stage('Deploy to ECS') {
             steps {
                 script {
-                    sh "docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    // Update ECS service with new Docker image
+                    sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
                 }
             }
         }
