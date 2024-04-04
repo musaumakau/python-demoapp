@@ -9,7 +9,7 @@ pipeline {
         IMAGE_TAG = "latest"
         DOCKERHUB_REPO = "5936/${IMAGE_REPO_NAME}"
         ECS_CLUSTER_NAME = "example-cluster"
-        ECS_SERVICE_NAME = "python-app"
+        ECS_SERVICE_NAME = "python-app-service"
     }
 
     stages {
