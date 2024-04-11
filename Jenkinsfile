@@ -29,6 +29,13 @@ pipeline {
             }
         }
 
+        stage('Test') {
+           steps {
+              sh 'pytest'
+    }
+}
+
+
         stage('Building image') {
             steps {
                 script {
