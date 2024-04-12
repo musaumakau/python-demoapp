@@ -29,12 +29,13 @@ pipeline {
             }
         }
 
-        stage('Test') {
-           steps {
-              sh 'pytest'
-    }
-}
+        stage('Pytest') {
+            steps {
+                sh("${JENKINS_HOME}/scripts/pytest.sh ${WORKSPACE}")
+            }
+        }
 
+   
 
         stage('Building image') {
             steps {
