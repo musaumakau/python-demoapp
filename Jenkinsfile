@@ -73,16 +73,16 @@ pipeline {
                 sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
             }
         }
-    // stage('Deploy to ECS') {
-    //         steps {
-    //             script {
-    //                 // Update ECS service with new Docker image
-    //                 withAWS(credentials: '78c0c37d-ae65-44f6-ac4f-2c484b25afbb', region: 'eu-west-1') {
-    //                     sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
-    //                 }
-    //             }
-    //         }
-    //     }    
+    stage('Deploy to ECS') {
+            steps {
+                script {
+                    // Update ECS service with new Docker image
+                    withAWS(credentials: '78c0c37d-ae65-44f6-ac4f-2c484b25afbb', region: 'eu-west-1') {
+                        sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
+                    }
+                }
+            }
+        }    
 
 
 
